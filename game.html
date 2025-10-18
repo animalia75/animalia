@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Animals</title>
+	<link rel="stylesheet" href="styles.css">
+	<script type="text/javascript" src="script.js"></script>
+</head>
+
+<body>
+	<audio id="music" src="music.mp3" loop>
+	</audio>
+	<audio id="dummysong" src="dummy.mp3">
+	</audio>
+	<header>
+		<h1>Animals</h1>
+		<div class="score-display">
+			<h2 id="scoreID">Score : 0</h2>
+		</div>
+		<div class="header-buttons">
+			<a href="index.html"><button class="actual-button" id="Home">Home</button></a>
+			<button class="actual-button" id="dummy">Dummy</button>
+		</div>
+	</header>
+
+	<div id="container" class="container">
+		<div class="left">
+			<img id="photo" alt="Placeholder Image" class="photo">
+		</div>
+
+		<div class="right" id="inputs">
+		</div>
+	</div>
+
+	<footer>
+		<div class="actual input-group">
+			<input type="text" id="guess" placeholder="Guess">
+			<ul id="suggestions"></ul>
+		</div>
+		<div class="action-buttons">
+			<button class="actual-button" id="check" type="text">Check</button>
+			<button class="actual-button" id="next">Next</button>
+		</div>
+	</footer>
+
+</body>
+
+</html>
