@@ -89,6 +89,7 @@ if __name__ == "__main__":
                             else:
                                 noeud.parent.descendants.remove(noeud)
                                 noeud.parent.descendants.add(parent)
+                                parent.parent = noeud.parent
                                 noeud.set_parent(parent)
                                 parent.descendants.add(noeud)
 
