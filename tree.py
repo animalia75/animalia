@@ -3,7 +3,6 @@ import json
 rangsTaxonomiques = [
     "Domaine",
     "Règne",
-    "Sous-règne",
     "Infra-règne",
     "Super-embr.",
     "Embranchement",
@@ -42,6 +41,22 @@ class Node:
     
     def __str__(self):
         return f"{self.rangTaxonomique}: {self.nom}"
+    
+    def est_ascendant_de(self, autre):
+        if autre is None:
+            return False
+        if self.nom == autre.nom:
+            return True
+        return self.est_ascendant_de(autre.parent)
+    
+    def set_parent(self, other):
+        self.parent = other
+    
+    def asdict(self):
+        return {
+            "name": f"{self.rangTaxonomique}: {self.nom}",
+            "children": sorted((child.asdict() for child in self.descendants), key=(lambda child: rangsTaxonomiques.index(child["name"].split(":")[0])))
+        }
 
 
 if __name__ == "__main__":
@@ -59,7 +74,28 @@ if __name__ == "__main__":
                         noeud = Node(rangTaxonomique, taxon, noeud)
                         noeuds[taxon] = noeud
                     else:
+                        parent = noeud
                         noeud = noeuds[taxon]
+                        if parent is None or noeud.parent is None:
+                            continue
+                        nouvel_index = rangsTaxonomiques.index(parent.rangTaxonomique)
+                        ancien_index = rangsTaxonomiques.index(noeud.parent.rangTaxonomique)
+                        if nouvel_index > ancien_index:
+                            # cas 0 1 3 0 2 3
+                            if noeud.parent.est_ascendant_de(parent):
+                                noeud.parent.descendants.remove(noeud)
+                                noeud.set_parent(parent)
+                                parent.descendants.add(noeud)
+                            else:
+                                noeud.parent.descendants.remove(noeud)
+                                noeud.parent.descendants.add(parent)
+                                noeud.set_parent(parent)
+                                parent.descendants.add(noeud)
+
+
+    with open("arbre.json", mode="w") as arbre:
+        json.dump(eukariotes.asdict(), arbre)
+    exit()
     
     noeud = eukariotes
     while True:
