@@ -1,4 +1,5 @@
 import json
+import random
 
 rangsTaxonomiques = [
     "Domaine",
@@ -58,7 +59,6 @@ class Node:
             "children": sorted((child.asdict() for child in self.descendants), key=(lambda child: rangsTaxonomiques.index(child["name"].split(":")[0])))
         }
 
-
 if __name__ == "__main__":
     eukariotes = Node("Domaine", "Eukaryota", None)
     animaux = Node("Règne", "Animalia", eukariotes)
@@ -96,19 +96,34 @@ if __name__ == "__main__":
 
     with open("arbre.json", mode="w") as arbre:
         json.dump(eukariotes.asdict(), arbre)
-    exit()
+    #exit()
     
     noeud = eukariotes
+    liste_des_animo_aleratoire = random.choice(liste_des_animo)
+    difficult = input("Difficulté normal ou hard ? \n")
+
+    with open(f"data/{liste_des_animo_aleratoire}.json") as animal_aleatoire_content:
+        classification = json.load(animal_aleatoire_content)["classification"][-1][1]
+    if difficult == "normal":
+        classification = f"{liste_des_animo_aleratoire}, {classification}"
+        print("La difficulté selectionné est normal, le nom vernaculaire sera ajouté. \n")
+    else: 
+         print("La difficulté selectionné est hard, il n'y aura que le nom scientifique. \n") 
+    print("Pour revenir en arrière : z", sep="\n")
     while True:
-        print(noeud, "Revenir en arrière : z", sep="\n")
         listeDesDescendants = list(noeud.descendants)
         for k, d in enumerate(noeud.descendants):
-            print(f"{k}: {d}")
+            print(f"{d.nom} | {classification}")   
+            print(f"{k}: {d} \n")
         choice = input()
+        print("\n")
+        if d.nom == classification :
+            print("TU AS GAGNE BRAVO")
+            break
         if choice == "z" and noeud.parent is not None:
             noeud = noeud.parent
         elif choice.isdigit():
-            choice = int(choice)
+            choice = int()
             if choice >= len(listeDesDescendants):
                 print("Mauvais choix")
             else:
