@@ -114,7 +114,7 @@ if __name__ == "__main__":
         listeDesDescendants = list(noeud.descendants)
         for k, d in enumerate(noeud.descendants):
             print(f"{d.nom} | {classification}")   
-            print(f"{k}: {d} \n")
+            print(f"{k}: {d} \n") #je ne sais pas pourquoi mais quand il y a le choix de plusieur neud ca beug il ne choisi pas le bon :(
         choice = input()
         print("\n")
         if d.nom == classification :
